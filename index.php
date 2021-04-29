@@ -1,117 +1,28 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <link rel="stylesheet" href="index.css" type="text/css" />
-    <title>Bibliothèque de Livres - Vincent</title>
-    <meta charset="UTF-8">
-</head>
-
-<body>
-    <div class="menu">
-        <ul id="navigation">
-            <li><a href="index.html" title="Accueil">Accueil</a></li>
-            <li><a href="livres.html" title="Les livres">Livres</a></li>
-            <li><a href="utilisateurs.html" title="Les utilisateurs">Utilisateurs</a></li>
-            <li><a href="livre.html" title="Ajout Livre">Ajout Livre</a></li>
-            <li><a href="utilisateur.html" title="Ajout Utilisateur">Ajout Utilisateur</a></li>
-        </ul>
-    </div>
-    <div class="centrer">
-        <h1><span>Bienvenue sur la ViViothèque</span></h1>
-        <div class="search_place">
-            <input type="search" placeholder="Entrez un mot-clef" name="search_word">
-            <button>Rechercher</button>
-        </div>
-        <div id='tableau'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titre du livre</th>
-                        <th>Auteur de livre</th>
-                        <th>Nb de pages</th>
-                        <th>Disponibilité</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Harry Potter à l'école des sorciers</td>
-                        <td>J. K. Rowling</td>
-                        <td>329 pages</td>
-                        <td>50</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>Voyage au bout de la nuit</td>
-                        <td>Louis-Ferdinand Céline</td>
-                        <td>179 pages</td>
-                        <td>25</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>Cent ans de solitude</td>
-                        <td>Gabriel García Márquez</td>
-                        <td>149 pages</td>
-                        <td>30</td>
-                        <td>125</td>
-                    </tr>
-                    <tr>
-                        <td>Le seigneur des anneaux T.1 : la fraternité de l'anneau</td>
-                        <td>J.R.R. Tolkien</td>
-                        <td>290 pages</td>
-                        <td>2</td>
-                        <td>20 000</td>
-                    </tr>
-                    <tr>
-                        <td>1984</td>
-                        <td>George Orwell</td>
-                        <td>150 pages</td>
-                        <td>2</td>
-                        <td>20 000</td>
-                    </tr>
-                    <tr>
-                        <td>L'étranger</td>
-                        <td>Albert Camus</td>
-                        <td>170 pages</td>
-                        <td>2</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>Belle du seigneur</td>
-                        <td>Albert Cohen</td>
-                        <td>124 pages</td>
-                        <td>2</td>
-                        <td>200</td>
-                    </tr>
-                    <tr>
-                        <td>Les misérables</td>
-                        <td>Victor Hugo</td>
-                        <td>120 pages</td>
-                        <td>15</td>
-                        <td>39</td>
-                    </tr>
-                    <tr>
-                        <td>La promesse de l'aube</td>
-                        <td>Romain Gary</td>
-                        <td>170 pages</td>
-                        <td>97</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>Le comte de Monte-Cristo</td>
-                        <td>Alexandre Dumas</td>
-                        <td>290 pages</td>
-                        <td>2</td>
-                        <td>20 000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <footer>
-        <p>2021 &copy; Vilfeu Vincent</p>
-    </footer>
-</body>
-
-</html>
+<?php
+require_once('model/PdoViviotheque.php');
+require_once('model/User.php');
+require_once('model/Book.php');
+require_once('auth.php');
+include('view/v_header.php');
+session_start();
+$pdoUser = new User();
+$pdoBook = new Book();
+$isConnect = isConnect();
+//co pour controller
+if(!isset($_REQUEST['co']) || !$isConnect) {
+    $_REQUEST['co'] = 'connexion';
+}
+$co = $_REQUEST['co'];
+switch ($co) {
+    case 'deconnexion' :
+        include("controller/c_deconnexion.php");
+        break;
+    case 'connexion' : 
+        include("controller/c_connexion.php");
+        break;
+    case 'seeBooks' :
+        include("controller/c_borrowedBooks/php");
+        break;
+}
+include('view/v_footer.php');
+?>
